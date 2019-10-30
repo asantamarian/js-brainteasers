@@ -17,6 +17,7 @@
 // ''
  */
 
+//This is a much Cleaner approach
 var validPairs ={
   '{':'}',
   '(':')',
@@ -28,7 +29,7 @@ Object.keys(validPairs).forEach( key =>{
   validChars += `${key}${validPairs[key]}`
 });
 
-var isValidChar = function (char) {
+function isValidChar (char) {
   
   if (validChars.indexOf(char) > -1) {
     return true;
@@ -37,7 +38,7 @@ var isValidChar = function (char) {
   }
 }
 
-var opens = function (char) {
+function opens (char) {
   if(validPairs[char]){
     return true;
   }
@@ -51,29 +52,29 @@ function closes(topOfStack, closedParenthesis) {
   return false;
 }
 
-var balanceado = function (str){
-  //Validar balanceo de parentesis
+function balanced (str){
+  
   var inputStr = str;
   
   if (inputStr === null) { return true }
   
   var strArray = inputStr.split('');
 
-  var pila = [];
+  var stack = [];
 
   for (var i = 0; i < strArray.length; i++) {
     if (isValidChar(strArray[i])) {
 
       if (opens(strArray[i])) {
-            pila.push(strArray[i]);
+            stack.push(strArray[i]);
       
       } else {
         
-          if (pila.length === 0) {
+          if (stack.length === 0) {
               return false;
           }
       
-          var top = pila.pop(); // saca el elemento de tope de la pila
+          var top = stack.pop(); // take last element
       
           if (!closes(top, strArray[i])) {
                 return false;
@@ -81,10 +82,13 @@ var balanceado = function (str){
       }
     }
   }
-  var returnValue = pila.length === 0 ? true : false;
+  var returnValue = stack.length === 0 ? true : false;
   return returnValue;
 }
-//EJECUCION
+
+
+
+//TEST RUN
 
 
 
@@ -98,7 +102,7 @@ var tests =['(a[0]+b[2c[6]]) {24+53})',
  ''];
 
 tests.forEach(str => {
-    if(balanceado(str)){
+    if(balanced(str)){
         console.log("Balanceado");
       }else{
         console.log("No balanceado");
